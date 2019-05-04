@@ -1,0 +1,38 @@
+# Create a GCE instance that will be part of an instance group
+# Repeat this block of code to provision more instances 
+resource "google_compute_instance" "instance1" {
+  name = "tf-test-instance1"
+  machine_type = "f1-micro"
+  zone = "${var.zone}"
+  tags = ["http-tag"]
+  boot_disk {
+    initialize_params {
+      image = "projects/debian-cloud/global/licenses/debian-9-stretch"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+      // Ephemeral IP
+    }
+  }
+# If you're not sure of the proper access scopes to set, choose Allow full access to all Cloud APIs and then make sure to restrict access by setting IAM roles.
+  service_account {
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
+}
+
+
+# Create an instance group comprising of the GCE instance defined above
+resource "google_compute_instance_group" "default" {
+  name = "tf-group1"
+  zone = "${var.zone}"
+  
+  # If you defined more than 1 instance above, you can just add them to this array
+  instances = ["${google_compute_instance.instance1.self_link}"]
+  
+  named_port {
+    name = "http"
+    port = "80"
+  }
+}

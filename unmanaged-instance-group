@@ -1,4 +1,4 @@
-# Create a GCE instance that will be part of an instance group
+# Create a GCE instance that will be part of an unmanaged instance group, i.e., you manage yourself without a template
 # Repeat this block of code to provision more instances 
 resource "google_compute_instance" "instance1" {
   name = "tf-test-instance1"

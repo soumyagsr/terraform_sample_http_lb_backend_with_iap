@@ -11,5 +11,5 @@
 
 ###### **Additional modifications that you can try:**
 ###### 1. If you want to use a managed instance group as the backend of the load balancer, use the main.tf script provided here. 
-###### 2. If you want to use an instance group with heterogeneous instances, please point the backend service to the instance group scripted in the 'additional.tf' file.
-###### 3. If you want to provision an autoscaler with the managed instance group, please refer to the autoscaler.tf for instructions.
+###### 2. If you want to use an unmanaged instance group with instances that you provision and manage, please point the backend service to the instance group scripted in the 'unmanaged-instance-group' file.
+###### 3. If you want to provision an autoscaler with the managed instance group, please refer to the 'autoscaler' file.

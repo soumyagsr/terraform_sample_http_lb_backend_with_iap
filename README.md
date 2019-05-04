@@ -1,5 +1,4 @@
 #### Provisioning a globally load balanced, managed instance group behind an Identity Aware Proxy (IAP):
-
 ![Components of load balancer](https://cloud.google.com/load-balancing/images/basic-http-load-balancer.svg)
 
 ###### Please use [this](https://cloud.google.com/iap/docs/authentication-howto) page for instructions on how to generate Oauth2 credentials (client id and client secret) for the Identity Aware Proxy (IAP). Then copy over the client id and secret into main.tf when defining the backend service.

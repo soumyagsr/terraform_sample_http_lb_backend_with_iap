@@ -74,8 +74,8 @@ resource "google_compute_backend_service" "default" {
     group = "${google_compute_instance_group_manager.mig-mgr.instance_group}"
   }
   iap   = {
-      oauth2_client_id = "417969429103-b0ia0u26bssfse9ei5ciuku563kq75pc.apps.googleusercontent.com"
-      oauth2_client_secret = "VD_JOw9KuCgKnf9a4fVEYYMe"
+      oauth2_client_id = "XXXX.apps.googleusercontent.com"
+      oauth2_client_secret = "XXXX"
   }
   health_checks = ["${google_compute_health_check.health-check.self_link}"]
 }

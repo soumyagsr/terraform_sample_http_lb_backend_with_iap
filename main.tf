@@ -1,12 +1,14 @@
-rovider "google" {
+provider "google" {
   region = "${var.region}"
   project = "${var.project_name}"
   credentials = "${file("${var.credentials_file_path}")}"
 }
+
 # Create a static global address (single anycast IP)
 resource "google_compute_global_address" "external-address" {
   name = "tf-external-address"
 }
+
 # Create a managed instance group template
 resource "google_compute_instance_template" "mig-template" {
   name        = "tf-mig-template"
@@ -31,6 +33,7 @@ resource "google_compute_instance_template" "mig-template" {
     scopes = ["userinfo-email", "compute-ro", "storage-ro"]
   }
 }
+
 # Create a managed instance group using the template defined above
 # This is zonal MIG, use google_compute_region_instance_group_manager is you want a regional MIG
 resource "google_compute_instance_group_manager" "mig-mgr" {
@@ -62,6 +65,7 @@ resource "google_compute_health_check" "health-check" {
     port         = "8080"
   }
 }
+
 /* Create a backend service pointing to the managed instance group defined above.
 The backend service definition is where the IAP provisioning happens.
 The OAuth2 client id and secret cannot be generated in Terrafom, you have to use the console.
@@ -79,6 +83,7 @@ resource "google_compute_backend_service" "default" {
   }
   health_checks = ["${google_compute_health_check.health-check.self_link}"]
 }
+
 # Define the url map - use the path matcher to point to different backend services
 # Example of content based load balancing to different backends is contained in the repo listed in References
 resource "google_compute_url_map" "default" {
@@ -93,11 +98,13 @@ resource "google_compute_url_map" "default" {
     default_service = "${google_compute_backend_service.default.self_link}"
   }
 }
+
 # Define the HTTP(S) proxy where the forwarding rule forwards requests
 resource "google_compute_target_http_proxy" "http-lb-proxy" {
   name = "tf-http-lb-proxy"
   url_map = "${google_compute_url_map.default.self_link}"
 }
+
 # Define the load balancer forwarding rule that sends traffic to the proxy defined above
 resource "google_compute_global_forwarding_rule" "default" {
   name = "tf-http-content-gfr"

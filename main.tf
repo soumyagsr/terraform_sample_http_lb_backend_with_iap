@@ -47,12 +47,15 @@ resource "google_compute_instance_group_manager" "mig-mgr" {
     port = "80"
   }
 }
+
 output "instance_group_manager" {
   value = "${google_compute_instance_group_manager.mig-mgr.instance_group}"
 }
+
 output "health_check" {
   value = "${google_compute_health_check.health-check.self_link}"
 }
+
 resource "google_compute_health_check" "health-check" {
   name                = "tf-health-check"
   check_interval_sec  = 5
@@ -60,7 +63,7 @@ resource "google_compute_health_check" "health-check" {
   healthy_threshold   = 2
   unhealthy_threshold = 10             # 50 seconds
   http_health_check {
-    request_path = "/healthz"
+    request_path = "/health"
     port         = "8080"
   }
 }

@@ -15,6 +15,7 @@ resource "google_compute_instance_template" "mig-template" {
   description = "Template used to create the instances within the managed instance group."
   instance_description = "description assigned to instances"
   machine_type         = "n1-standard-1"
+  tags                 = ["http-tag"]    # Tag(s) specified here must match the target_tags in the firewall rule
   can_ip_forward       = false
   scheduling {
     automatic_restart   = true
@@ -120,7 +121,9 @@ resource "google_compute_firewall" "default" {
   name = "tf-test-firewall-allow-internal-only"
   network = "default"
   allow {
-    protocol = "tcp"    # No port number specified which means all ports are allowed
+    protocol = "tcp"    
+    ports = ["80"]
   }
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
+  target_tags = ["http-tag"]
 }

@@ -41,8 +41,7 @@ resource "google_compute_instance_group_manager" "mig-mgr" {
   base_instance_name = "tf-mig-instance"
   zone               = "${var.zone}"
   instance_template  = "${google_compute_instance_template.mig-template.self_link}"
-  # target_pools = ["${google_compute_target_pool..self_link}"]
-  target_size  = 3
+  target_size  = 3     # Instance group with 3 instances
   named_port {
     name = "custom-http"
     port = "80"
